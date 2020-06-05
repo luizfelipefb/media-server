@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - ${CONFIG}/influxdb:/var/lib/influxdb
+    ports:
+      - 8086:8086
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: always
+    network_mode: host
+    user: ${UID}
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Organization
+    volumes:
+      - ${CONFIG}/grafana/data:/var/lib/grafana
+    ports:
+      - 3000:3000
+
+  telegraf:
+    container_name: telegraf
+    image: telegraf:latest
+    restart: always
+    network_mode: host
+    depends_on:
+      - influxdb
+    environment:
+      - HOST_MOUNT_PREFIX=/hostfs
+      - HOST_PROC=/hostfs/proc
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+

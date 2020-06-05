@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  homebridge:
+    container_name: homebridge
+    image: oznu/homebridge:latest
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=${TIMEZONE}
+      - PGID=${UID}
+      - PUID=${GID}
+      - HOMEBRIDGE_CONFIG_UI=1
+      - HOMEBRIDGE_CONFIG_UI_PORT=8080
+    volumes:
+      - ${CONFIG}/homebridge:/homebridge
