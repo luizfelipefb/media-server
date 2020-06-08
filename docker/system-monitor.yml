@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   influxdb:
@@ -39,4 +39,3 @@ services:
       - /proc:/hostfs/proc:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ../config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-
