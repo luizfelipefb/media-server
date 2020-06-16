@@ -9,6 +9,8 @@ help: ## Show this help
 
 all: home-automation media-server system-monitor ## Create all containers
 
+uap: update all prune ## Update, recreate and prune all containers
+
 home-automation: ## Create home automation containers
 	@echo -e '\n==> Creating Home Automation containers\n'
 	@docker-compose -p home-automation -f docker/home-automation.yml up -d
