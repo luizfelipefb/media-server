@@ -32,5 +32,5 @@ update: ## Update images
 	@docker images --format "{{.Repository}}" | xargs -i sh -c 'echo -e "\n- Pulling {}" && docker pull {}'
 
 prune: ## Prune dangling images
-	@echo -e '\n==> Pruning images'
+	@echo -e '\n==> Pruning images\n'
 	@docker image prune -f
