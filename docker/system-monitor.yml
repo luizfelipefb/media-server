@@ -20,6 +20,7 @@ services:
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_NAME=Organization
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     volumes:
       - ${CONFIG}/grafana/data:/var/lib/grafana
     ports:
@@ -38,4 +39,51 @@ services:
     volumes:
       - /proc:/hostfs/proc:ro
       - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/disk1:/hostfs/mnt/disk1
       - ../config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  varken:
+    container_name: varken
+    image: boerderij/varken:latest
+    restart: always
+    network_mode: host
+    depends_on:
+      - influxdb
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+      - VRKN_GLOBAL_SONARR_SERVER_IDS=1
+      - VRKN_GLOBAL_RADARR_SERVER_IDS=1
+      - VRKN_GLOBAL_LIDARR_SERVER_IDS=false
+      - VRKN_GLOBAL_TAUTULLI_SERVER_IDS=1
+      - VRKN_GLOBAL_OMBI_SERVER_IDS=false
+      - VRKN_GLOBAL_SICKCHILL_SERVER_IDS=false
+      - VRKN_GLOBAL_UNIFI_SERVER_IDS=false
+      - VRKN_GLOBAL_MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY}
+      - VRKN_INFLUXDB_URL=localhost
+      - VRKN_TAUTULLI_1_URL=localhost:8181
+      - VRKN_TAUTULLI_1_APIKEY=${TAUTULLI_APIKEY}
+      - VRKN_SONARR_1_URL=localhost:8989
+      - VRKN_SONARR_1_APIKEY=${SONARR_APIKEY}
+      - VRKN_RADARR_1_URL=localhost:7878
+      - VRKN_RADARR_1_APIKEY=${RADARR_APIKEY}
+    volumes:
+      - ${CONFIG}/varken:/config
+
+  tautulli:
+    container_name: tautulli
+    image: linuxserver/tautulli:latest
+    restart: always
+    network_mode: host
+    depends_on:
+      - influxdb
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG}/tautulli:/config
+      - ${CONFIG}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs
+    ports:
+      - 8181:8181
