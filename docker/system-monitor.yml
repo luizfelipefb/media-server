@@ -47,6 +47,7 @@ services:
     image: boerderij/varken:latest
     restart: always
     network_mode: host
+    user: ${UID}
     depends_on:
       - influxdb
     environment:
