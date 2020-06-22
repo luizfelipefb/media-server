@@ -9,10 +9,10 @@ poster="/tmp/poster.jpg"
 # create parameters
 if [ -n "${sonarr_series_id}" ]
 then
-  endpoint="localhost:8989/api/MediaCover/${sonarr_series_id}/poster-500.jpg?apiKey=${SONARR_API_TOKEN}"
+  endpoint="localhost:8989/api/MediaCover/${sonarr_series_id}/poster-500.jpg?apiKey=${SONARR_APIKEY}"
   msg="tv show ${sonarr_series_title} s$(printf '%02d' ${sonarr_episodefile_seasonnumber})e$(printf '%02d' ${sonarr_episodefile_episodenumbers}) has been ${sonarr_eventtype,,}ed"
 else
-  endpoint="localhost:7878/api/MediaCover/${radarr_movie_id}/poster-500.jpg?apiKey=${RADARR_API_TOKEN}"
+  endpoint="localhost:7878/api/MediaCover/${radarr_movie_id}/poster-500.jpg?apiKey=${RADARR_APIKEY}"
   msg="movie ${radarr_movie_title} has been ${radarr_eventtype,,}ed"
 fi
 

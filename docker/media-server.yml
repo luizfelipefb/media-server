@@ -14,9 +14,7 @@ services:
     volumes:
       - ${CONFIG}/plex:/config
       - ${TRANSCODE}:/transcode
-      - ${MOVIES}:/data/movies
-      - ${TVSHOWS}:/data/tvshows
-      - ${AUDIOBOOKS}:/data/audiobooks
+      - ${MEDIA}:/data
 
   transmission:
     container_name: transmission
@@ -61,8 +59,8 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/bazarr:/config
-      - ${MOVIES}:/movies
-      - ${TVSHOWS}:/tvshows
+      - ${MEDIA}/movies:/movies
+      - ${MEDIA}/tvshows:/tvshows
     ports:
       - 6767:6767
 
@@ -80,7 +78,7 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/radarr:/config
-      - ${MOVIES}:/movies
+      - ${MEDIA}/movies:/movies
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
     ports:
@@ -100,8 +98,9 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/sonarr:/config
-      - ${TVSHOWS}:/tvshows
+      - ${MEDIA}/tvshows:/tvshows
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
+      - ../.env:/scripts/.env
     ports:
       - 8989:8989
