@@ -101,7 +101,7 @@ services:
       - ${CONFIG}/sonarr:/config
       - ${MEDIA}/tvshows:/tvshows
       - ${DOWNLOADS}:/downloads
-      - ../:/scripts
+      - ../scripts:/scripts
       - ../.env:/scripts/.env
     ports:
       - 8989:8989
