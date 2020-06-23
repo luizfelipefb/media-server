@@ -81,6 +81,7 @@ services:
       - ${MEDIA}/movies:/movies
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
+      - ../.env:/scripts/.env
     ports:
       - 7878:7878
 
@@ -100,7 +101,7 @@ services:
       - ${CONFIG}/sonarr:/config
       - ${MEDIA}/tvshows:/tvshows
       - ${DOWNLOADS}:/downloads
-      - ../scripts:/scripts
+      - ../:/scripts
       - ../.env:/scripts/.env
     ports:
       - 8989:8989
