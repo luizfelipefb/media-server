@@ -105,3 +105,17 @@ services:
       - ../.env:/scripts/.env
     ports:
       - 8989:8989
+
+  ombi:
+    container_name: ombi
+    image: linuxserver/ombi:latest
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG}/ombi:/config
+    ports:
+      - 3579:3579
