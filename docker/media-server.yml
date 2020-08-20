@@ -61,6 +61,7 @@ services:
       - ${CONFIG}/bazarr:/config
       - ${MEDIA}/movies:/movies
       - ${MEDIA}/tvshows:/tvshows
+      - ${MEDIA}/animes:/animes
     ports:
       - 6767:6767
 
@@ -100,6 +101,7 @@ services:
     volumes:
       - ${CONFIG}/sonarr:/config
       - ${MEDIA}/tvshows:/tvshows
+      - ${MEDIA}/animes:/animes
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
       - ../.env:/scripts/.env
