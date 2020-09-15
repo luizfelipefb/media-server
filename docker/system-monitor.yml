@@ -87,6 +87,6 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/tautulli:/config
-      - ${CONFIG}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs
+      - ${CONFIG}/plex/Library/Application Support/Plex Media Server/Logs:/logs
     ports:
       - 8181:8181
