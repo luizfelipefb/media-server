@@ -67,7 +67,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr:nightly
     restart: always
     network_mode: host
     depends_on:
@@ -88,7 +88,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:preview
     restart: always
     network_mode: host
     depends_on:
@@ -110,7 +110,7 @@ services:
 
   ombi:
     container_name: ombi
-    image: linuxserver/ombi:latest
+    image: linuxserver/ombi:v4-preview
     restart: always
     network_mode: host
     environment:
