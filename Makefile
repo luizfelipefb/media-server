@@ -29,7 +29,7 @@ create-retention: ## Create retention policy for telegraf influx database
 
 update: ## Update images
 	@echo -e '\n==> Updating images'
-	@docker images --format "{{.Repository}}" | xargs -i sh -c 'echo -e "\n- Pulling {}" && docker pull {}'
+	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs -i sh -c 'echo -e "\n- Pulling {}" && docker pull {}'
 
 prune: ## Prune dangling images
 	@echo -e '\n==> Pruning images\n'
