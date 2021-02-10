@@ -8,8 +8,6 @@ services:
     network_mode: host
     volumes:
       - ${CONFIG}/influxdb:/var/lib/influxdb
-    ports:
-      - 8086:8086
 
   grafana:
     container_name: grafana
@@ -23,8 +21,6 @@ services:
       - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
     volumes:
       - ${CONFIG}/grafana/data:/var/lib/grafana
-    ports:
-      - 3000:3000
 
   telegraf:
     container_name: telegraf
@@ -88,5 +84,3 @@ services:
     volumes:
       - ${CONFIG}/tautulli:/config
       - ${CONFIG}/plex/Library/Application Support/Plex Media Server/Logs:/logs
-    ports:
-      - 8181:8181

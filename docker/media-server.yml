@@ -28,10 +28,6 @@ services:
     volumes:
       - ${CONFIG}/transmission:/config
       - ${DOWNLOADS}:/downloads
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
 
   jackett:
     container_name: jackett
@@ -45,8 +41,6 @@ services:
     volumes:
       - ${CONFIG}/jackett:/config
       - ${DOWNLOADS}/blackhole:/downloads
-    ports:
-      - 9117:9117
 
   bazarr:
     container_name: bazarr
@@ -62,8 +56,6 @@ services:
       - ${MEDIA}/movies:/movies
       - ${MEDIA}/tvshows:/tvshows
       - ${MEDIA}/animes:/animes
-    ports:
-      - 6767:6767
 
   radarr:
     container_name: radarr
@@ -83,8 +75,6 @@ services:
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
       - ../.env:/scripts/.env
-    ports:
-      - 7878:7878
 
   sonarr:
     container_name: sonarr
@@ -105,8 +95,6 @@ services:
       - ${DOWNLOADS}:/downloads
       - ../scripts:/scripts
       - ../.env:/scripts/.env
-    ports:
-      - 8989:8989
 
   ombi:
     container_name: ombi
@@ -119,5 +107,3 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/ombi:/config
-    ports:
-      - 3579:3579
