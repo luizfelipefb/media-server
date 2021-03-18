@@ -3,7 +3,7 @@ version: "3"
 services:
   influxdb:
     container_name: influxdb
-    image: influxdb:latest
+    image: influxdb:1.8
     restart: always
     network_mode: host
     volumes:
@@ -27,11 +27,16 @@ services:
     image: telegraf:latest
     restart: always
     network_mode: host
+    user: telegraf:${DOCKER_GID}
     depends_on:
       - influxdb
     environment:
       - HOST_MOUNT_PREFIX=/hostfs
+      - HOST_ETC=/hostfs/etc
       - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
     volumes:
       - /proc:/hostfs/proc:ro
       - /var/run/docker.sock:/var/run/docker.sock

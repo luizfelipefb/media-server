@@ -13,14 +13,20 @@ uap: update all prune ## Update, recreate and prune all containers
 
 home-automation: ## Create home automation containers
 	@echo -e '\n==> Creating Home Automation containers\n'
+	@cp .env config/.env
+	@cp .env docker/.env
 	@docker-compose -p home-automation -f docker/home-automation.yml up -d
 
 media-server: ## Create media server containers
 	@echo -e '\n==> Creating Media Server containers\n'
+	@cp .env config/.env
+	@cp .env docker/.env
 	@docker-compose -p media-server -f docker/media-server.yml up -d
 
 system-monitor: ## Create system monitor containers
 	@echo -e '\n==> Creating System Monitor containers\n'
+	@cp .env config/.env
+	@cp .env docker/.env
 	@docker-compose -p system-monitor -f docker/system-monitor.yml up -d
 
 create-retention: ## Create retention policy for telegraf influx database
