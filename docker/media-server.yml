@@ -78,7 +78,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:preview
+    image: linuxserver/sonarr:latest
     restart: always
     network_mode: host
     depends_on:
