@@ -107,3 +107,4 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/ombi:/config
+
