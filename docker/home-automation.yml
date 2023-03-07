@@ -1,11 +1,39 @@
 version: "3"
 
 services:
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${CONFIG}/mqtt:/mosquitto
+    command: "mosquitto -c /mosquitto-no-auth.conf"
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+    image: koenkk/zigbee2mqtt
+    network_mode: host
+    depends_on:
+      - mqtt
+    volumes:
+      - ${CONFIG}/zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    environment:
+      - TZ=${TIMEZONE}
+      - ZIGBEE2MQTT_CONFIG_FRONTEND_PORT=8082
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+
   homebridge:
     container_name: homebridge
     image: oznu/homebridge:latest
     restart: always
     network_mode: host
+    depends_on:
+      - mqtt
+      - zigbee2mqtt
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
@@ -14,3 +42,18 @@ services:
       - HOMEBRIDGE_CONFIG_UI_PORT=8080
     volumes:
       - ${CONFIG}/homebridge:/homebridge
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=${TIMEZONE}
+      - WEB_PORT=8053
+    volumes:
+      - ${CONFIG}/pihole/etc-pihole:/etc/pihole
+      - ${CONFIG}/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+
