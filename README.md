@@ -14,12 +14,16 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 - sonarr - tv shows PVR
 - radarr - movies PVR
 - bazarr - subtitles manager
-
+- ombi - content requester for plex
+ 
 ## Home Automation
 
 `make home-automation`
 
 - homebridge - allows non native homekit accessories to be added to homekit
+- mqtt - mosquitto server
+- zigbee2mqtt - allows zigbee devices pairing without vendor's bridge/gateway
+- pihole - network wide ad blocking, dns and dhcp server
 
 ## System Monitoring
 
@@ -28,6 +32,8 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 - grafana - analytics & monitoring web interface
 - influxdb - time series database
 - telegraf - server agent for collecting & reporting metrics
+- varken - plex aggregator to influxdb
+- tautulli - monitor and analytics for plex
 
 ### Retention
 
