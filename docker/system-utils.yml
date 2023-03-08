@@ -46,3 +46,14 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${CONFIG}/ddclinet:/config
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    network_mode: host
+    restart: always
+    environment:
+      - TZ=${TIMEZONE}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 3600
