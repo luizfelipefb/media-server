@@ -29,19 +29,6 @@ services:
       - ${CONFIG}/transmission:/config
       - ${DOWNLOADS}:/downloads
 
-  jackett:
-    container_name: jackett
-    image: linuxserver/jackett:latest
-    restart: always
-    network_mode: host
-    environment:
-      - TZ=${TIMEZONE}
-      - PUID=${UID}
-      - PGID=${GID}
-    volumes:
-      - ${CONFIG}/jackett:/config
-      - ${DOWNLOADS}/blackhole:/downloads
-
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr:latest
@@ -64,7 +51,6 @@ services:
     network_mode: host
     depends_on:
       - transmission
-      - jackett
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
@@ -83,7 +69,6 @@ services:
     network_mode: host
     depends_on:
       - transmission
-      - jackett
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
@@ -107,3 +92,15 @@ services:
       - PGID=${GID}
     volumes:
       - ${CONFIG}/ombi:/config
+
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    network_mode: host
+    restart: always
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG}/prowlarr:/config
