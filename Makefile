@@ -14,26 +14,26 @@ uap: update all prune ## Update, recreate and prune all containers
 home-automation: ## Create home automation containers
 	@echo -e '\n==> Creating Home Automation containers\n'
 	@cp .env config/.env
-	@cp .env docker/.env
-	@docker-compose -p home-automation -f docker/home-automation.yml up -d --build --remove-orphans --force-recreate
+	@cp .env stacks/.env
+	@docker-compose -p home-automation -f stacks/home-automation.yml up -d --build --remove-orphans --force-recreate
 
 media-server: ## Create media server containers
 	@echo -e '\n==> Creating Media Server containers\n'
 	@cp .env config/.env
-	@cp .env docker/.env
-	@docker-compose -p media-server -f docker/media-server.yml up -d --build --remove-orphans --force-recreate
+	@cp .env stacks/.env
+	@docker-compose -p media-server -f stacks/media-server.yml up -d --build --remove-orphans --force-recreate
 
 system-monitor: ## Create system monitor containers
 	@echo -e '\n==> Creating System Monitor containers\n'
 	@cp .env config/.env
-	@cp .env docker/.env
-	@docker-compose -p system-monitor -f docker/system-monitor.yml up -d --build --remove-orphans --force-recreate
+	@cp .env stacks/.env
+	@docker-compose -p system-monitor -f stacks/system-monitor.yml up -d --build --remove-orphans --force-recreate
 
 system-utils: ## Create system utils containers
 	@echo -e '\n==> Creating System Utils containers\n'
 	@cp .env config/.env
-	@cp .env docker/.env
-	@docker-compose -p system-utils -f docker/system-utils.yml up -d --build --remove-orphans --force-recreate
+	@cp .env stacks/.env
+	@docker-compose -p system-utils -f stacks/system-utils.yml up -d --build --remove-orphans --force-recreate
 
 create-retention: ## Create retention policy for telegraf influx database
 	@echo -e '\n==> Adding retention policy for telegarf db\n'
@@ -41,9 +41,9 @@ create-retention: ## Create retention policy for telegraf influx database
 
 update: ## Update images
 	@echo -e '\n==> Updating images'
-	@docker-compose -p home-automation -f docker/home-automation.yml pull
-	@docker-compose -p media-server -f docker/media-server.yml pull
-	@docker-compose -p system-monitor -f docker/system-monitor.yml pull
+	@docker-compose -p home-automation -f stacks/home-automation.yml pull
+	@docker-compose -p media-server -f stacks/media-server.yml pull
+	@docker-compose -p system-monitor -f stacks/system-monitor.yml pull
 
 prune: ## Prune dangling images
 	@echo -e '\n==> Pruning images\n'
