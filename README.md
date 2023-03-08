@@ -21,9 +21,9 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 | service      | description                | port  |
 | ------------ | -------------------------- | ----- |
 | bazarr       | subtitles manager          | 6767  |
-| jackett      | index normalizer           | 9117  |
 | ombi         | content requester for plex | 3579  |
 | plex         | media server               | 32400 |
+| prowlarr     | indexer manager            | 9696  |
 | radarr       | movies PVR                 | 7878  |
 | sonarr       | tv shows PVR               | 8989  |
 | transmission | torrent downloader         | 9091  |
@@ -44,12 +44,13 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 `make system-utils`
 
-| service   | description                                            | port |
-| --------- | ------------------------------------------------------ | ---- |
-| ddclient  | client used to update dynamic DNS entries for accounts | N/A  |
-| homepage  | application dashboard                                  | 3001 |
-| pihole    | network wide ad blocking, dns and dhcp server          | 8053 |
-| portainer | container management                                   | 9443 |
+| service    | description                                            | port |
+| ---------- | ------------------------------------------------------ | ---- |
+| ddclient   | client used to update dynamic DNS entries for accounts | N/A  |
+| homepage   | application dashboard                                  | 3001 |
+| pihole     | network wide ad blocking, dns and dhcp server          | 8053 |
+| portainer  | container management                                   | 9443 |
+| watchtower | update the running version of your containerized apps  | N/A  |
 
 ### Retention
 
