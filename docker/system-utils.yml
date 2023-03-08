@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: always
+    network_mode: host
+    environment:
+      - TZ=${TIMEZONE}
+      - WEB_PORT=8053
+    volumes:
+      - ${CONFIG}/pihole/etc-pihole:/etc/pihole
+      - ${CONFIG}/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - ${CONFIG}/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  homepage:
+    container_name: homepage
+    image: ghcr.io/benphelps/homepage:latest
+    network_mode: host
+    restart: always
+    environment:
+      - PORT=3001
+    volumes:
+      - ${CONFIG}/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  ddclient:
+    container_name: ddclient
+    image: lscr.io/linuxserver/ddclient:latest
+    network_mode: host
+    restart: always
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG}/ddclinet:/config

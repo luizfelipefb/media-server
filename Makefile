@@ -7,7 +7,7 @@ help: ## Show this help
 	@echo ' Targets:'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "%-30s %s\n", $$1, $$2}'
 
-all: home-automation media-server system-monitor ## Create all containers
+all: home-automation media-server system-monitor system-utils ## Create all containers
 
 uap: update all prune ## Update, recreate and prune all containers
 
@@ -28,6 +28,12 @@ system-monitor: ## Create system monitor containers
 	@cp .env config/.env
 	@cp .env docker/.env
 	@docker-compose -p system-monitor -f docker/system-monitor.yml up -d --build --remove-orphans --force-recreate
+
+system-utils: ## Create system utils containers
+	@echo -e '\n==> Creating System Utils containers\n'
+	@cp .env config/.env
+	@cp .env docker/.env
+	@docker-compose -p system-utils -f docker/system-utils.yml up -d --build --remove-orphans --force-recreate
 
 create-retention: ## Create retention policy for telegraf influx database
 	@echo -e '\n==> Adding retention policy for telegarf db\n'
