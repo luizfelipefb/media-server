@@ -3,7 +3,7 @@ version: "3"
 services:
   mqtt:
     container_name: mqtt
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:latest
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -13,7 +13,7 @@ services:
   zigbee2mqtt:
     container_name: zigbee2mqtt
     restart: unless-stopped
-    image: koenkk/zigbee2mqtt
+    image: koenkk/zigbee2mqtt:latest
     network_mode: host
     depends_on:
       - mqtt
