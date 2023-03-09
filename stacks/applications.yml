@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  shiori:
+    container_name: shiori
+    image: ghcr.io/go-shiori/shiori:latest
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 3002:8080
