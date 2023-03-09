@@ -4,6 +4,14 @@ Edit the `.env` file with the propper values
 
 Run `make <target>` to create the desired containers or `make all` to deploy everything
 
+## Applications
+
+`make applications`
+
+| service | description       | port |
+| ------- | ----------------- | ---- |
+| shiori  | bookmarks manager | 3002 |
+
 ## Home Automation
 
 `make home-automation`

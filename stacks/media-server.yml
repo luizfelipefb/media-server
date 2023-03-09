@@ -4,7 +4,7 @@ services:
   plex:
     container_name: plex
     image: plexinc/pms-docker:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
@@ -19,7 +19,7 @@ services:
   transmission:
     container_name: transmission
     image: linuxserver/transmission:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
@@ -32,7 +32,7 @@ services:
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
@@ -47,7 +47,7 @@ services:
   radarr:
     container_name: radarr
     image: linuxserver/radarr:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - transmission
@@ -65,7 +65,7 @@ services:
   sonarr:
     container_name: sonarr
     image: linuxserver/sonarr:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - transmission
@@ -84,7 +84,7 @@ services:
   ombi:
     container_name: ombi
     image: linuxserver/ombi:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
@@ -97,7 +97,7 @@ services:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
     network_mode: host
-    restart: always
+    restart: unless-stopped
     environment:
       - PUID=${UID}
       - PGID=${GID}

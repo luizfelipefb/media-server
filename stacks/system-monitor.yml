@@ -4,7 +4,7 @@ services:
   influxdb:
     container_name: influxdb
     image: influxdb:1.8
-    restart: always
+    restart: unless-stopped
     network_mode: host
     volumes:
       - ${CONFIG}/influxdb:/var/lib/influxdb
@@ -12,7 +12,7 @@ services:
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     user: ${UID}
     environment:
@@ -25,7 +25,7 @@ services:
   telegraf:
     container_name: telegraf
     image: telegraf:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     user: telegraf:${DOCKER_GID}
     depends_on:
@@ -46,7 +46,7 @@ services:
   varken:
     container_name: varken
     image: boerderij/varken:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - tautulli
@@ -78,7 +78,7 @@ services:
   tautulli:
     container_name: tautulli
     image: linuxserver/tautulli:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - influxdb

@@ -12,8 +12,8 @@ services:
 
   zigbee2mqtt:
     container_name: zigbee2mqtt
-    restart: unless-stopped
     image: koenkk/zigbee2mqtt:latest
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - mqtt
@@ -29,7 +29,7 @@ services:
   homebridge:
     container_name: homebridge
     image: oznu/homebridge:latest
-    restart: always
+    restart: unless-stopped
     network_mode: host
     depends_on:
       - mqtt
