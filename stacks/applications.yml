@@ -6,5 +6,7 @@ services:
     image: ghcr.io/go-shiori/shiori:latest
     restart: unless-stopped
     network_mode: bridge
+    environment:
+      - TZ=${TIMEZONE}
     ports:
       - 3002:8080
