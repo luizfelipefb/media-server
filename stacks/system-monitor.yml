@@ -26,9 +26,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.grafana.loadbalancer.server.port=3003
       - traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)
-      - traefik.http.routers.grafana.entrypoints=web,websecure
-      - traefik.http.routers.grafana.tls=true
-      - traefik.http.routers.grafana.tls.certresolver=staging
+      - traefik.http.routers.grafana.entrypoints=web
 
   telegraf:
     container_name: telegraf
@@ -101,6 +99,4 @@ services:
       - traefik.enable=true
       - traefik.http.services.tautulli.loadbalancer.server.port=8181
       - traefik.http.routers.tautulli.rule=Host(`grafana.${DOMAIN}`)
-      - traefik.http.routers.tautulli.entrypoints=web,websecure
-      - traefik.http.routers.tautulli.tls=true
-      - traefik.http.routers.tautulli.tls.certresolver=staging
+      - traefik.http.routers.tautulli.entrypoints=web

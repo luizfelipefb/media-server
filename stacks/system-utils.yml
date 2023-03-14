@@ -19,9 +19,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.pihole.loadbalancer.server.port=8053
       - traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN}`)
-      - traefik.http.routers.pihole.entrypoints=web,websecure
-      - traefik.http.routers.pihole.tls=true
-      - traefik.http.routers.pihole.tls.certresolver=staging
+      - traefik.http.routers.pihole.entrypoints=web
 
   portainer:
     container_name: portainer
@@ -35,7 +33,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.portainer.loadbalancer.server.port=9443
       - traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)
-      - traefik.http.routers.portainer.entrypoints=web,websecure
+      - traefik.http.routers.portainer.entrypoints=websecure
       - traefik.http.routers.portainer.tls=true
       - traefik.http.routers.portainer.tls.certresolver=staging
 
@@ -54,9 +52,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.traefik.loadbalancer.server.port=8080
       - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
-      - traefik.http.routers.traefik.entrypoints=web,websecure
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.tls.certresolver=staging
+      - traefik.http.routers.traefik.entrypoints=web
 
   ddclient:
     container_name: ddclient

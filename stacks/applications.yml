@@ -16,9 +16,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.homepage.loadbalancer.server.port=3001
       - traefik.http.routers.homepage.rule=Host(`squats.${DOMAIN}`)
-      - traefik.http.routers.homepage.entrypoints=web,websecure
-      - traefik.http.routers.homepage.tls=true
-      - traefik.http.routers.homepage.tls.certresolver=staging
+      - traefik.http.routers.homepage.entrypoints=web
 
   shiori:
     container_name: shiori
@@ -34,6 +32,4 @@ services:
       - traefik.enable=true
       - traefik.http.services.shiori.loadbalancer.server.port=3002
       - traefik.http.routers.shiori.rule=Host(`shiori.${DOMAIN}`)
-      - traefik.http.routers.shiori.entrypoints=web,websecure
-      - traefik.http.routers.shiori.tls=true
-      - traefik.http.routers.shiori.tls.certresolver=staging
+      - traefik.http.routers.shiori.entrypoints=web

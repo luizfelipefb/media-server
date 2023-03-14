@@ -29,9 +29,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8082
       - traefik.http.routers.zigbee2mqtt.rule=Host(`z2m.${DOMAIN}`)
-      - traefik.http.routers.zigbee2mqtt.entrypoints=web,websecure
-      - traefik.http.routers.zigbee2mqtt.tls=true
-      - traefik.http.routers.zigbee2mqtt.tls.certresolver=staging
+      - traefik.http.routers.zigbee2mqtt.entrypoints=web
 
   homebridge:
     container_name: homebridge
@@ -53,6 +51,4 @@ services:
       - traefik.enable=true
       - traefik.http.services.homebridge.loadbalancer.server.port=8081
       - traefik.http.routers.homebridge.rule=Host(`homebridge.${DOMAIN}`)
-      - traefik.http.routers.homebridge.entrypoints=web,websecure
-      - traefik.http.routers.homebridge.tls=true
-      - traefik.http.routers.homebridge.tls.certresolver=staging
+      - traefik.http.routers.homebridge.entrypoints=web

@@ -19,9 +19,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.plex.loadbalancer.server.port=32400
       - traefik.http.routers.plex.rule=Host(`plex.${DOMAIN}`)
-      - traefik.http.routers.plex.entrypoints=web,websecure
-      - traefik.http.routers.plex.tls=true
-      - traefik.http.routers.plex.tls.certresolver=staging
+      - traefik.http.routers.plex.entrypoints=web
 
   transmission:
     container_name: transmission
@@ -39,9 +37,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.transmission.loadbalancer.server.port=9091
       - traefik.http.routers.transmission.rule=Host(`transmission.${DOMAIN}`)
-      - traefik.http.routers.transmission.entrypoints=web,websecure
-      - traefik.http.routers.transmission.tls=true
-      - traefik.http.routers.transmission.tls.certresolver=staging
+      - traefik.http.routers.transmission.entrypoints=web
 
   bazarr:
     container_name: bazarr
@@ -61,9 +57,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.bazarr.loadbalancer.server.port=6767
       - traefik.http.routers.bazarr.rule=Host(`bazarr.${DOMAIN}`)
-      - traefik.http.routers.bazarr.entrypoints=web,websecure
-      - traefik.http.routers.bazarr.tls=true
-      - traefik.http.routers.bazarr.tls.certresolver=staging
+      - traefik.http.routers.bazarr.entrypoints=web
 
   radarr:
     container_name: radarr
@@ -86,9 +80,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.radarr.loadbalancer.server.port=7878
       - traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN}`)
-      - traefik.http.routers.radarr.entrypoints=web,websecure
-      - traefik.http.routers.radarr.tls=true
-      - traefik.http.routers.radarr.tls.certresolver=staging
+      - traefik.http.routers.radarr.entrypoints=web
 
   sonarr:
     container_name: sonarr
@@ -112,9 +104,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.sonarr.loadbalancer.server.port=8989
       - traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)
-      - traefik.http.routers.sonarr.entrypoints=web,websecure
-      - traefik.http.routers.sonarr.tls=true
-      - traefik.http.routers.sonarr.tls.certresolver=staging
+      - traefik.http.routers.sonarr.entrypoints=web
 
   ombi:
     container_name: ombi
@@ -131,9 +121,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.ombi.loadbalancer.server.port=3579
       - traefik.http.routers.ombi.rule=Host(`ombi.${DOMAIN}`)
-      - traefik.http.routers.ombi.entrypoints=web,websecure
-      - traefik.http.routers.ombi.tls=true
-      - traefik.http.routers.ombi.tls.certresolver=staging
+      - traefik.http.routers.ombi.entrypoints=web
 
   prowlarr:
     container_name: prowlarr
@@ -150,6 +138,4 @@ services:
       - traefik.enable=true
       - traefik.http.services.prowlarr.loadbalancer.server.port=9696
       - traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN}`)
-      - traefik.http.routers.prowlarr.entrypoints=web,websecure
-      - traefik.http.routers.prowlarr.tls=true
-      - traefik.http.routers.prowlarr.tls.certresolver=staging
+      - traefik.http.routers.prowlarr.entrypoints=web
