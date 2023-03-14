@@ -8,9 +8,10 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 `make applications`
 
-| service | description       | port |
-| ------- | ----------------- | ---- |
-| shiori  | bookmarks manager | 3002 |
+| service  | description           | port |
+| -------- | --------------------- | ---- |
+| homepage | application dashboard | 3001 |
+| shiori   | bookmarks manager     | 3002 |
 
 ## Home Automation
 
@@ -19,8 +20,8 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 | service     | description                                                   | port |
 | ----------- | ------------------------------------------------------------- | ---- |
 | homebridge  | allows non native homekit accessories to be added to homekit  | 8081 |
-| mqtt        | mosquitto server                                              | 8082 |
-| zigbee2mqtt | allows zigbee devices pairing without vendor's bridge/gateway | N/A  |
+| mqtt        | mosquitto server                                              | N/A  |
+| zigbee2mqtt | allows zigbee devices pairing without vendor's bridge/gateway | 8082 |
 
 ## Media Server
 
@@ -42,7 +43,7 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 | service  | description                                     | port |
 | -------- | ----------------------------------------------- | ---- |
-| grafana  | analytics & monitoring web interface            | 3000 |
+| grafana  | analytics & monitoring web interface            | 3003 |
 | influxdb | time series database                            | 8086 |
 | tautulli | monitor and analytics for plex                  | 8181 |
 | telegraf | server agent for collecting & reporting metrics | N/A  |
@@ -55,9 +56,9 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 | service    | description                                            | port |
 | ---------- | ------------------------------------------------------ | ---- |
 | ddclient   | client used to update dynamic DNS entries for accounts | N/A  |
-| homepage   | application dashboard                                  | 3001 |
 | pihole     | network wide ad blocking, dns and dhcp server          | 8053 |
 | portainer  | container management                                   | 9443 |
+| traefik    | HTTP reverse proxy and load balancer                   | 8080 |
 | watchtower | update the running version of your containerized apps  | N/A  |
 
 ### Retention
