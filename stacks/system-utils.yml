@@ -47,7 +47,7 @@ services:
     environment:
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG}/appdata/traefik:/ssl-certs
+      - ${CONFIG}/traefik:/ssl-certs
       - ${PWD}/config/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
