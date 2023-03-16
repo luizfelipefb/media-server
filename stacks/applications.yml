@@ -30,6 +30,6 @@ services:
       - ${CONFIG}/shiori:/shiori
     labels:
       - traefik.enable=true
-      - traefik.http.services.shiori.loadbalancer.server.port=3002
+      - traefik.http.services.shiori.loadbalancer.server.port=8080 # using internal container port
       - traefik.http.routers.shiori.rule=Host(`shiori.${DOMAIN}`)
       - traefik.http.routers.shiori.entrypoints=web

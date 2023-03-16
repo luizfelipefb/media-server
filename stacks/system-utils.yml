@@ -66,11 +66,32 @@ services:
 
   watchtower:
     container_name: watchtower
-    image: containrrr/watchtower
-    network_mode: host
+    image: containrrr/watchtower:latest
     restart: unless-stopped
     environment:
       - TZ=${TIMEZONE}
+      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_APIKEY}
+      - WATCHTOWER_HTTP_API_METRICS=true
+    ports:
+      - 8084:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 3600
+
+  speedtest-tracker:
+    container_name: speedtest-tracker
+    image: ghcr.io/alexjustesen/speedtest-tracker:latest
+    restart: unless-stopped
+    ports:
+      - 8083:80
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG}/speedtest:/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.speedtest.loadbalancer.server.port=80
+      - traefik.http.routers.speedtest.rule=Host(`speedtest.${DOMAIN}`)
+      - traefik.http.routers.speedtest.entrypoints=web

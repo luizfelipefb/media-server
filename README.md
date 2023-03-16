@@ -43,7 +43,7 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 | service  | description                                     | port |
 | -------- | ----------------------------------------------- | ---- |
-| grafana  | analytics & monitoring web interface            | 3003 |
+| grafana  | analytics & monitoring web interface            | 3000 |
 | influxdb | time series database                            | 8086 |
 | tautulli | monitor and analytics for plex                  | 8181 |
 | telegraf | server agent for collecting & reporting metrics | N/A  |
@@ -53,13 +53,14 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 `make system-utils`
 
-| service    | description                                            | port |
-| ---------- | ------------------------------------------------------ | ---- |
-| ddclient   | client used to update dynamic DNS entries for accounts | N/A  |
-| pihole     | network wide ad blocking, dns and dhcp server          | 8053 |
-| portainer  | container management                                   | 9443 |
-| traefik    | HTTP reverse proxy and load balancer                   | 8080 |
-| watchtower | update the running version of your containerized apps  | N/A  |
+| service           | description                                            | port |
+| ----------------- | ------------------------------------------------------ | ---- |
+| ddclient          | client used to update dynamic DNS entries for accounts | N/A  |
+| pihole            | network wide ad blocking, dns and dhcp server          | 8053 |
+| portainer         | container management                                   | 9443 |
+| speedtest-tracker | wan speed test tracker                                 | 8083 |
+| traefik           | HTTP reverse proxy and load balancer                   | 8080 |
+| watchtower        | update the running version of your containerized apps  | 8084 |
 
 ### Retention
 

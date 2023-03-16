@@ -36,8 +36,6 @@ api:
 providers:
   docker:
     exposedByDefault: false
-    useBindPortIP: true
   file:
     directory: /etc/traefik
     watch: true
-
