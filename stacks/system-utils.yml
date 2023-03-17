@@ -9,7 +9,7 @@ services:
     environment:
       - TZ=${TIMEZONE}
       - WEB_PORT=8053
-      - INTERFACE=enp3s0
+      - INTERFACE=enp2s0
     volumes:
       - ${CONFIG}/pihole/etc-pihole:/etc/pihole
       - ${CONFIG}/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
