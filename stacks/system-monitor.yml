@@ -64,6 +64,7 @@ services:
       - HOST_SYS=/hostfs/sys
       - HOST_VAR=/hostfs/var
       - HOST_RUN=/hostfs/run
+      - INFLUXDB2_TOKEN=${INFLUXDB2_TOKEN}
     volumes:
       - /proc:/hostfs/proc:ro
       - /var/run/docker.sock:/var/run/docker.sock
