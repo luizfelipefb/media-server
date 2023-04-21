@@ -33,7 +33,7 @@ applications: ## Create applications containers
 
 create-retention: ## Create retention policy for telegraf influx database
 	@echo -e '\n==> Adding retention policy for telegarf db\n'
-	@curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY "one_week_only" ON "telegraf" DURATION $(DUR) REPLICATION 1 DEFAULT"
+	@curl -i -XPOST http://localhost:8087/query --data-urlencode "q=CREATE RETENTION POLICY "one_week_only" ON "telegraf" DURATION $(DUR) REPLICATION 1 DEFAULT"
 
 update: ## Update images
 	@echo -e '\n==> Updating images'
