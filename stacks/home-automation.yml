@@ -4,8 +4,8 @@ services:
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 1883:1883
     volumes:
       - ${CONFIG}/mqtt:/mosquitto
     command: "mosquitto -c /mosquitto-no-auth.conf"
@@ -13,8 +13,8 @@ services:
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 8082:8080
     depends_on:
       - mqtt
     volumes:
@@ -22,19 +22,17 @@ services:
       - /run/udev:/run/udev:ro
     environment:
       - TZ=${TIMEZONE}
-      - ZIGBEE2MQTT_CONFIG_FRONTEND_PORT=8082
     devices:
       - /dev/ttyACM0:/dev/ttyACM0
     labels:
       - traefik.enable=true
-      - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8082
+      - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8080
       - traefik.http.routers.zigbee2mqtt.rule=Host(`z2m.${DOMAIN}`)
       - traefik.http.routers.zigbee2mqtt.entrypoints=web
 
   homebridge:
     container_name: homebridge
     image: oznu/homebridge:latest
-    restart: unless-stopped
     network_mode: host
     depends_on:
       - mqtt
@@ -43,12 +41,10 @@ services:
       - TZ=${TIMEZONE}
       - PUID=${UID}
       - PGID=${GID}
-      - HOMEBRIDGE_CONFIG_UI=1
-      - HOMEBRIDGE_CONFIG_UI_PORT=8081
     volumes:
       - ${CONFIG}/homebridge:/homebridge
     labels:
       - traefik.enable=true
-      - traefik.http.services.homebridge.loadbalancer.server.port=8081
+      - traefik.http.services.homebridge.loadbalancer.server.port=8581
       - traefik.http.routers.homebridge.rule=Host(`homebridge.${DOMAIN}`)
       - traefik.http.routers.homebridge.entrypoints=web

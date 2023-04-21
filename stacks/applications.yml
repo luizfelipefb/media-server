@@ -4,24 +4,21 @@ services:
   homepage:
     container_name: homepage
     image: ghcr.io/benphelps/homepage:latest
-    network_mode: host
-    restart: unless-stopped
-    environment:
-      - PORT=3001
+    ports:
+      - 3001:3000
     volumes:
       - ${CONFIG}/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/disk1:/mnt/disk1
     labels:
       - traefik.enable=true
-      - traefik.http.services.homepage.loadbalancer.server.port=3001
+      - traefik.http.services.homepage.loadbalancer.server.port=3000
       - traefik.http.routers.homepage.rule=Host(`squats.${DOMAIN}`)
       - traefik.http.routers.homepage.entrypoints=web
 
   shiori:
     container_name: shiori
     image: ghcr.io/go-shiori/shiori:latest
-    restart: unless-stopped
     environment:
       - TZ=${TIMEZONE}
     ports:

@@ -4,7 +4,6 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
-    restart: unless-stopped
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
@@ -24,8 +23,9 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 9000:9000
+      - 9443:9443
     volumes:
       - ${CONFIG}/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -39,7 +39,6 @@ services:
     container_name: traefik
     image: traefik:latest
     network_mode: host
-    restart: unless-stopped
     environment:
       - TZ=${TIMEZONE}
     volumes:
@@ -55,8 +54,6 @@ services:
   ddclient:
     container_name: ddclient
     image: lscr.io/linuxserver/ddclient:latest
-    network_mode: host
-    restart: unless-stopped
     environment:
       - PUID=${UID}
       - PGID=${GID}
@@ -67,13 +64,12 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower:latest
-    restart: unless-stopped
+    ports:
+      - 8084:8080
     environment:
       - TZ=${TIMEZONE}
       - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_APIKEY}
       - WATCHTOWER_HTTP_API_METRICS=true
-    ports:
-      - 8084:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 3600
@@ -81,7 +77,6 @@ services:
   speedtest-tracker:
     container_name: speedtest-tracker
     image: ghcr.io/alexjustesen/speedtest-tracker:latest
-    restart: unless-stopped
     ports:
       - 8083:80
     environment:

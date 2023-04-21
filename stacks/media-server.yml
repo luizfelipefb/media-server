@@ -1,11 +1,29 @@
 version: "3"
 
 services:
+  jellyfin:
+    container_name: jellyfin
+    image: linuxserver/jellyfin:latest
+    ports:
+      - 8096:8096
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+    volumes:
+      - ${CONFIG}/jellyfin:/config
+      - ${MEDIA}:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.jellyfin.loadbalancer.server.port=8096
+      - traefik.http.routers.jellyfin.rule=Host(`jellyfin.${DOMAIN}`)
+      - traefik.http.routers.jellyfin.entrypoints=web
+
   plex:
     container_name: plex
     image: plexinc/pms-docker:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 32400:32400
     environment:
       - TZ=${TIMEZONE}
       - PLEX_CLAIM=${PLEX_CLAIM}
@@ -24,8 +42,8 @@ services:
   transmission:
     container_name: transmission
     image: linuxserver/transmission:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 9091:9091
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
@@ -42,8 +60,8 @@ services:
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 6767:6767
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
@@ -62,8 +80,8 @@ services:
   radarr:
     container_name: radarr
     image: linuxserver/radarr:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 7878:7878
     depends_on:
       - transmission
     environment:
@@ -85,8 +103,8 @@ services:
   sonarr:
     container_name: sonarr
     image: linuxserver/sonarr:latest
-    restart: unless-stopped
-    network_mode: host
+    ports:
+      - 8989:8989
     depends_on:
       - transmission
     environment:
@@ -106,28 +124,29 @@ services:
       - traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)
       - traefik.http.routers.sonarr.entrypoints=web
 
-  ombi:
-    container_name: ombi
-    image: linuxserver/ombi:latest
-    restart: unless-stopped
-    network_mode: host
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    ports:
+      - 5055:5055
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
       - PGID=${GID}
+      - LOG_LEVEL=debug
     volumes:
-      - ${CONFIG}/ombi:/config
+      - ${CONFIG}/overseerr:/app/config
     labels:
       - traefik.enable=true
-      - traefik.http.services.ombi.loadbalancer.server.port=3579
-      - traefik.http.routers.ombi.rule=Host(`ombi.${DOMAIN}`)
-      - traefik.http.routers.ombi.entrypoints=web
+      - traefik.http.services.overseerr.loadbalancer.server.port=5055
+      - traefik.http.routers.overseerr.rule=Host(`overseerr.${DOMAIN}`)
+      - traefik.http.routers.overseerr.entrypoints=web
 
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
-    network_mode: host
-    restart: unless-stopped
+    ports:
+      - 9696:9696
     environment:
       - PUID=${UID}
       - PGID=${GID}
