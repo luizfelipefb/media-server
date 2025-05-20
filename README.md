@@ -4,6 +4,45 @@ Edit the `.env` file with the propper values
 
 Run `make <target>` to create the desired containers or `make all` to deploy everything
 
+## .env file
+
+Create an .env file with the following values <replacing where needed>:
+
+```shell
+# user and groups id
+TIMEZONE=
+UID=
+GID=
+DOCKER_GID=
+
+# paths to config directory, transcode, media and download
+CONFIG=
+TRANSCODE=
+MEDIA=
+DOWNLOADS=
+
+# domain name for forwarding
+DOMAIN=
+
+# apikeys
+PLEX_CLAIM=
+MAXMIND_LICENSE_KEY=
+TAUTULLI_APIKEY=
+SONARR_APIKEY=
+RADARR_APIKEY=
+OMBI_APIKEY=
+WATCHTOWER_APIKEY=
+INFLUXDB2_TOKEN=
+
+# telegram bot messeger (optional)
+TELEGRAM_BOT_TOKEN=
+CHAT_ID=
+
+# cloudflare
+CLOUDFLARE_TUNNEL_TOKEN=
+CLOUDFLARE_API_KEY=
+```
+
 ## Applications
 
 `make applications`
