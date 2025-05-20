@@ -1,9 +1,10 @@
-version: "3"
-
 services:
   homepage:
     container_name: homepage
-    image: ghcr.io/benphelps/homepage:latest
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: always
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=10.69.4.20:3001,squats.luizfelipefb.com
     ports:
       - 3001:3000
     volumes:
@@ -14,11 +15,16 @@ services:
       - traefik.enable=true
       - traefik.http.services.homepage.loadbalancer.server.port=3000
       - traefik.http.routers.homepage.rule=Host(`squats.${DOMAIN}`)
-      - traefik.http.routers.homepage.entrypoints=web
+      - traefik.http.routers.homepage.entrypoints=websecure
+      - traefik.http.routers.homepage.tls.certResolver=default
+      - traefik.http.routers.homepage.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.homepage.tls.domains[0].sans=*.${DOMAIN}
 
   shiori:
     container_name: shiori
     image: ghcr.io/go-shiori/shiori:latest
+    platform: linux/amd64
+    restart: always
     environment:
       - TZ=${TIMEZONE}
     ports:
@@ -29,4 +35,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.shiori.loadbalancer.server.port=8080 # using internal container port
       - traefik.http.routers.shiori.rule=Host(`shiori.${DOMAIN}`)
-      - traefik.http.routers.shiori.entrypoints=web
+      - traefik.http.routers.shiori.entrypoints=websecure
+      - traefik.http.routers.shiori.tls.certResolver=default
+      - traefik.http.routers.shiori.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.shiori.tls.domains[0].sans=*.${DOMAIN}

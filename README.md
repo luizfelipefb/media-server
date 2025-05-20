@@ -19,9 +19,10 @@ Run `make <target>` to create the desired containers or `make all` to deploy eve
 
 | service     | description                                                   | port |
 | ----------- | ------------------------------------------------------------- | ---- |
-| homebridge  | allows non native homekit accessories to be added to homekit  | 8581 |
+| homebridge  | allows non native homekit accessories to be added to homekit  | 8081 |
 | mqtt        | mosquitto server                                              | 1883 |
 | zigbee2mqtt | allows zigbee devices pairing without vendor's bridge/gateway | 8082 |
+| scrypted    | video integration platform                                    | 8089 |
 
 ## Media Server
 

@@ -1,14 +1,13 @@
-version: "3"
-
 services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
+    restart: always
     network_mode: host
     environment:
       - TZ=${TIMEZONE}
-      - WEB_PORT=8053
-      - INTERFACE=enp2s0
+      - FTLCONF_dns_interface=enp2s0
+      - FTLCONF_webserver_port=8053
     volumes:
       - ${CONFIG}/pihole/etc-pihole:/etc/pihole
       - ${CONFIG}/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
@@ -18,11 +17,15 @@ services:
       - traefik.enable=true
       - traefik.http.services.pihole.loadbalancer.server.port=8053
       - traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN}`)
-      - traefik.http.routers.pihole.entrypoints=web
+      - traefik.http.routers.pihole.entrypoints=websecure
+      - traefik.http.routers.pihole.tls.certResolver=default
+      - traefik.http.routers.pihole.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.pihole.tls.domains[0].sans=*.${DOMAIN}
 
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
+    restart: always
     ports:
       - 9000:9000
       - 9443:9443
@@ -33,37 +36,77 @@ services:
       - traefik.enable=true
       - traefik.http.services.portainer.loadbalancer.server.port=9000
       - traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)
-      - traefik.http.routers.portainer.entrypoints=web
+      - traefik.http.routers.portainer.entrypoints=websecure
+      - traefik.http.routers.portainer.tls.certResolver=default
+      - traefik.http.routers.portainer.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.portainer.tls.domains[0].sans=*.${DOMAIN}
 
   traefik:
     container_name: traefik
     image: traefik:latest
+    restart: always
     network_mode: host
     environment:
-      - TZ=${TIMEZONE}
+      - CLOUDFLARE_EMAIL=luizfelipefb@gmail.com
+      - CLOUDFLARE_API_KEY=${CLOUDFLARE_API_KEY}
+    command:
+      - --providers.docker.exposedByDefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certResolver=cloudflare
+      - --entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}
+      - --certificatesresolvers.default.acme.dnschallenge=true
+      - --certificatesresolvers.default.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.default.acme.storage=/ssl-certs/acme.json
+      - --log.filePath=/logs/log-file.log
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --api.dashboard=true
     volumes:
-      - ${CONFIG}/traefik:/ssl-certs
-      - ../config/traefik:/etc/traefik
+      - ${CONFIG}/traefik/certs:/ssl-certs
+      - ${CONFIG}/traefik/logs:/logs
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - traefik.enable=true
       - traefik.http.services.traefik.loadbalancer.server.port=8080
       - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)
-      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.tls.certResolver=default
+      - traefik.http.routers.traefik.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.traefik.tls.domains[0].sans=*.${DOMAIN}
 
-  ddclient:
-    container_name: ddclient
-    image: lscr.io/linuxserver/ddclient:latest
+  # cloudflare-tunnel:
+  #   image: cloudflare/cloudflared:latest
+  #   container_name: cloudflare-tunnel
+  #   network_mode: host
+  #   restart: always
+  #   environment:
+  #     - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  #   command: tunnel run
+  #   labels:
+  #     - traefik.enable=false
+
+  cloudflare-ddns:
+    image: timothyjmiller/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    restart: always
     environment:
       - PUID=${UID}
       - PGID=${GID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG}/ddclinet:/config
+      - ${CONFIG}/cloudflare-ddns/config.json:/config.json
+    labels:
+      - traefik.enable=false
 
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower:latest
+    restart: always
     ports:
       - 8084:8080
     environment:
@@ -73,20 +116,52 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 3600
+    labels:
+      - traefik.enable=false
 
-  speedtest-tracker:
-    container_name: speedtest-tracker
-    image: ghcr.io/alexjustesen/speedtest-tracker:latest
-    ports:
-      - 8083:80
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    restart: always
     environment:
       - TZ=${TIMEZONE}
       - PUID=${UID}
       - PGID=${GID}
+      - POSTGRES_DB=speedtest_tracker
+      - POSTGRES_USER=speedy
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ${CONFIG}/postgres:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+
+  speedtest-tracker:
+    container_name: speedtest-tracker
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    ports:
+      - 8083:80
+    environment:
+      - DISPLAY_TIMEZONE=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=speedtest_tracker
+      - DB_USERNAME=speedy
+      - DB_PASSWORD=password
+      - APP_KEY=base64:CK57ocid1skobBx69rGSuzlrS78qfttPIDJjVES+108=
+      - SPEEDTEST_SCHEDULE=0 * * * *
     volumes:
       - ${CONFIG}/speedtest:/config
+    restart: unless-stopped
+    depends_on:
+      - postgres
     labels:
       - traefik.enable=true
       - traefik.http.services.speedtest.loadbalancer.server.port=80
       - traefik.http.routers.speedtest.rule=Host(`speedtest.${DOMAIN}`)
-      - traefik.http.routers.speedtest.entrypoints=web
+      - traefik.http.routers.speedtest.entrypoints=websecure
+      - traefik.http.routers.speedtest.tls.certResolver=default
+      - traefik.http.routers.speedtest.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.speedtest.tls.domains[0].sans=*.${DOMAIN}

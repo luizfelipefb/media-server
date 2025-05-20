@@ -1,18 +1,20 @@
-version: "3"
-
 services:
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:latest
+    restart: always
     ports:
       - 1883:1883
     volumes:
       - ${CONFIG}/mqtt:/mosquitto
     command: "mosquitto -c /mosquitto-no-auth.conf"
+    labels:
+      - traefik.enable=false
 
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt:latest
+    restart: always
     ports:
       - 8082:8080
     depends_on:
@@ -28,11 +30,15 @@ services:
       - traefik.enable=true
       - traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8080
       - traefik.http.routers.zigbee2mqtt.rule=Host(`z2m.${DOMAIN}`)
-      - traefik.http.routers.zigbee2mqtt.entrypoints=web
+      - traefik.http.routers.zigbee2mqtt.entrypoints=websecure
+      - traefik.http.routers.zigbee2mqtt.tls.certResolver=default
+      - traefik.http.routers.zigbee2mqtt.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.zigbee2mqtt.tls.domains[0].sans=*.${DOMAIN}
 
   homebridge:
     container_name: homebridge
-    image: oznu/homebridge:latest
+    image: homebridge/homebridge:latest
+    restart: always
     network_mode: host
     depends_on:
       - mqtt
@@ -47,4 +53,27 @@ services:
       - traefik.enable=true
       - traefik.http.services.homebridge.loadbalancer.server.port=8581
       - traefik.http.routers.homebridge.rule=Host(`homebridge.${DOMAIN}`)
-      - traefik.http.routers.homebridge.entrypoints=web
+      - traefik.http.routers.homebridge.entrypoints=websecure
+      - traefik.http.routers.homebridge.tls.certResolver=default
+      - traefik.http.routers.homebridge.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.homebridge.tls.domains[0].sans=*.${DOMAIN}
+
+  scrypted:
+    container_name: scrypted
+    image: koush/scrypted:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - ${CONFIG}/scrypted/volume:/server/volume
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=${UID}
+      - PGID=${GID}
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.scrypted.loadbalancer.server.port=11080
+      - traefik.http.routers.scrypted.rule=Host(`scrypted.${DOMAIN}`)
+      - traefik.http.routers.scrypted.entrypoints=websecure
+      - traefik.http.routers.scrypted.tls.certResolver=default
+      - traefik.http.routers.scrypted.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.scrypted.tls.domains[0].sans=*.${DOMAIN}

@@ -5,29 +5,27 @@ global:
 entryPoints:
   web:
     address: :80
-#    http:
-#      redirections:
-#        entryPoint:
-#          to: websecure
-#          scheme: https
+    # http:
+    #   redirections:
+    #     entryPoint:
+    #       to: websecure
+    #       scheme: https
   websecure:
     address: :443
 
+serversTransport:
+  insecureSkipVerify: true
+
 certificatesResolvers:
-  staging:
+  cloudflare:
     acme:
       email: replace@example.com
-      storage: /ssl-certs/staging.json
-      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      httpChallenge:
-         entryPoint: web
-  production:
-    acme:
-      email: replace@example.com
-      storage: /ssl-certs/production.json
-      caServer: "https://acme-v02.api.letsencrypt.org/directory"
-      httpChallenge:
-        entryPoint: web
+      storage: /ssl-certs/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
 
 api:
   insecure: true
@@ -39,3 +37,7 @@ providers:
   file:
     directory: /etc/traefik
     watch: true
+
+log:
+  filePath: /ssl-certs/log-file.log
+  level: DEBUG
